@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 
-
 const SUPABASE_URL = 'https://ddcrnfojzuhogkuexboz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_4qVlWP9Lb0eRQZASi0DMCg_JfFY5j_B';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -10,7 +9,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 export default function SecurityDashboard() {
   const [activeIncident, setActiveIncident] = useState<any>(null);
 
- useEffect(() => {
+  useEffect(() => {
     let lastId: any = null;
     let isFirstLoad = true;
 
@@ -50,15 +49,23 @@ export default function SecurityDashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  
+  if (!activeIncident) {
+    return (
+      <View style={styles.standby}>
+        <Text style={styles.statusText}>🟢 System Online</Text>
+        <Text style={styles.subText}>Monitoring Edge AI Nodes for real-time threats...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.alertContainer}>
       <View style={styles.header}>
         <Text style={styles.alertTitle}>🚨 THREAT DETECTED 🚨</Text>
-        <Text style={styles.alertDetails}>Location: {activeIncident.zone}</Text>
+        <Text style={styles.alertDetails}>Location: {activeIncident?.zone}</Text>
         <Text style={styles.alertDetails}>
-          Type: {activeIncident.threat_classification} | Confidence:{' '}
-          {Number(activeIncident.confidence_score || 0).toFixed(2)}
+          Type: {activeIncident?.threat_classification} | Confidence:{' '}
+          {Number(activeIncident?.confidence_score || 0).toFixed(2)}
         </Text>
       </View>
 
