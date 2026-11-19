@@ -10,7 +10,7 @@ SUPABASE_KEY = "sb_publishable_4qVlWP9Lb0eRQZASi0DMCg_JfFY5j_B"
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
-NODE_ID = "faf1286d-b2af-4836-b43b-59392665e911"
+NODE_ID = "bb8c6be8-2530-4e9a-8992-d36f0e577f6e"
 
 print("Loading YOLO model...")
 model = YOLO('yolov8n.pt') 
