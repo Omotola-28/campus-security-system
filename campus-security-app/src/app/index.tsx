@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 
-// --- 1. Supabase Config (Paste your keys from App.js) ---
+
 const SUPABASE_URL = 'https://ddcrnfojzuhogkuexboz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_4qVlWP9Lb0eRQZASi0DMCg_JfFY5j_B';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -10,37 +10,47 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 export default function SecurityDashboard() {
   const [activeIncident, setActiveIncident] = useState<any>(null);
 
-  useEffect(() => {
-    const channel = supabase
-      .channel('public:incidents')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'incidents' },
-        (payload) => {
+ useEffect(() => {
+    let lastId: any = null;
+    let isFirstLoad = true;
+
+    const checkIncidents = async () => {
+      const { data, error } = await supabase
+        .from('incidents')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      if (error) {
+        console.error('Supabase fetch error:', error.message);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        const latest = data[0];
+        if (isFirstLoad) {
+          lastId = latest.id;
+          isFirstLoad = false;
+        } else if (latest.id !== lastId) {
+          lastId = latest.id;
           setActiveIncident({
-            ...payload.new,
+            ...latest,
             latitude: 7.4444,
             longitude: 3.9000,
             zone: 'Kenneth Dike Library, University of Ibadan',
           });
         }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
+      } else {
+        isFirstLoad = false;
+      }
     };
+
+    checkIncidents();
+    const interval = setInterval(checkIncidents, 2000);
+    return () => clearInterval(interval);
   }, []);
 
-  if (!activeIncident) {
-    return (
-      <View style={styles.standby}>
-        <Text style={styles.statusText}>🟢 System Online</Text>
-        <Text style={styles.subText}>Monitoring Edge AI Nodes for real-time threats...</Text>
-      </View>
-    );
-  }
-
+  
   return (
     <View style={styles.alertContainer}>
       <View style={styles.header}>
