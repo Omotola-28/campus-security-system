@@ -14,6 +14,7 @@ const CAMPUS_ZONES = [
   { zone: 'Sports Complex, University of Ibadan', latitude: 7.4455, longitude: 3.8975 },
   { zone: 'Kuti Hall, University of Ibadan', latitude: 7.4432, longitude: 3.8988 },
 ];
+
 export default function SecurityDashboard() {
   const [activeIncident, setActiveIncident] = useState<any>(null);
 
@@ -57,25 +58,26 @@ export default function SecurityDashboard() {
     const interval = setInterval(checkIncidents, 2000);
     return () => clearInterval(interval);
   }, []);
-const simulateThreat = async () => {
-  const { error } = await supabase.from('incidents').insert([
-    {
-      node_id: 'bb8c6be8-2530-4e9a-8992-d36f0e577f6e',
-      threat_classification: 'Simulated_Weapon',
-      confidence_score: 0.89,
-    },
-  ]);
-  if (error) console.error('Simulation error:', error.message);
-};
-  
+
+  const simulateThreat = async () => {
+    const { error } = await supabase.from('incidents').insert([
+      {
+        node_id: 'bb8c6be8-2530-4e9a-8992-d36f0e577f6e',
+        threat_classification: 'Simulated_Weapon',
+        confidence_score: 0.89,
+      },
+    ]);
+    if (error) console.error('Simulation error:', error.message);
+  };
+
   if (!activeIncident) {
     return (
       <View style={styles.standby}>
         <Text style={styles.statusText}>🟢 System Online</Text>
         <Text style={styles.subText}>Monitoring Edge AI Nodes for real-time threats...</Text>
         <TouchableOpacity style={styles.demoButton} onPress={simulateThreat}>
-  <Text style={styles.demoButtonText}>Test Alert (Simulate Edge AI)</Text>
-</TouchableOpacity>
+          <Text style={styles.demoButtonText}>Test Alert (Simulate Edge AI)</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -98,10 +100,12 @@ const simulateThreat = async () => {
             width="100%"
             height="100%"
             style={{ border: 0 }}
-           src={`https://maps.google.com/maps?q=${activeIncident.latitude},${activeIncident.longitude}&z=16&output=embed`}
-      
+            src={`https://maps.google.com/maps?q=${activeIncident.latitude},${activeIncident.longitude}&z=16&output=embed`}
+          />
         ) : (
-          <Text style={styles.subText}>Coordinates: 7.4444, 3.9000</Text>
+          <Text style={styles.subText}>
+            Coordinates: {activeIncident?.latitude}, {activeIncident?.longitude}
+          </Text>
         )}
       </View>
 
@@ -130,6 +134,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 10,
     textAlign: 'center',
+  },
+  demoButton: {
+    marginTop: 30,
+    backgroundColor: '#2c2c2c',
+    borderColor: '#555',
+    borderWidth: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  demoButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
   },
   alertContainer: {
     flex: 1,
@@ -164,18 +182,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  demoButton: {
-  marginTop: 30,
-  backgroundColor: '#2c2c2c',
-  borderColor: '#555',
-  borderWidth: 1,
-  paddingVertical: 12,
-  paddingHorizontal: 20,
-  borderRadius: 8,
-},
-demoButtonText: {
-  color: '#fff',
-  fontSize: 14,
-  fontWeight: '600',
-},
 });
