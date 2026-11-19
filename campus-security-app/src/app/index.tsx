@@ -6,6 +6,14 @@ const SUPABASE_URL = 'https://hlinmryajtmebgbjhlgi.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_4qVlWP9Lb0eRQZASi0DMCg_JfFY5j_B';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+const CAMPUS_ZONES = [
+  { zone: 'Kenneth Dike Library, University of Ibadan', latitude: 7.4444, longitude: 3.9000 },
+  { zone: 'UI Main Gate (First Gate), University of Ibadan', latitude: 7.4417, longitude: 3.9058 },
+  { zone: 'Trenchard Hall, University of Ibadan', latitude: 7.4435, longitude: 3.8995 },
+  { zone: 'Faculty of Science, University of Ibadan', latitude: 7.4468, longitude: 3.8960 },
+  { zone: 'Sports Complex, University of Ibadan', latitude: 7.4455, longitude: 3.8975 },
+  { zone: 'Kuti Hall, University of Ibadan', latitude: 7.4432, longitude: 3.8988 },
+];
 export default function SecurityDashboard() {
   const [activeIncident, setActiveIncident] = useState<any>(null);
 
@@ -32,11 +40,12 @@ export default function SecurityDashboard() {
           isFirstLoad = false;
         } else if (latest.id !== lastId) {
           lastId = latest.id;
+          const randomZone = CAMPUS_ZONES[Math.floor(Math.random() * CAMPUS_ZONES.length)];
           setActiveIncident({
             ...latest,
-            latitude: 7.4444,
-            longitude: 3.9000,
-            zone: 'Kenneth Dike Library, University of Ibadan',
+            latitude: randomZone.latitude,
+            longitude: randomZone.longitude,
+            zone: randomZone.zone,
           });
         }
       } else {
@@ -89,8 +98,8 @@ const simulateThreat = async () => {
             width="100%"
             height="100%"
             style={{ border: 0 }}
-            src="https://maps.google.com/maps?q=7.4444,3.9000&z=16&output=embed"
-          />
+           src={`https://maps.google.com/maps?q=${activeIncident.latitude},${activeIncident.longitude}&z=16&output=embed`}
+      
         ) : (
           <Text style={styles.subText}>Coordinates: 7.4444, 3.9000</Text>
         )}
