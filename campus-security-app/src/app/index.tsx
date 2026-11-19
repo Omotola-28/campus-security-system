@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 
 // --- 1. Supabase Config (Paste your keys from App.js) ---
 const SUPABASE_URL = 'https://ddcrnfojzuhogkuexboz.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_secret_tqBpHryhF4ZTli629lhFZQ_gqJYn9J9';
+const SUPABASE_ANON_KEY = 'sb_publishable_4qVlWP9Lb0eRQZASi0DMCg_JfFY5j_B';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export default function SecurityDashboard() {
