@@ -20,7 +20,7 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "output": "server",
+      "output": "single",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
@@ -48,6 +48,6 @@
         "projectId": "447f8d1a-ec1c-4b5b-acb5-68e2dea469c8"
       }
     },
-    "owner": "daaniyah"
+    "owner": "group"
   }
 }
