@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = 'https://ddcrnfojzuhogkuexboz.supabase.co';
+const SUPABASE_URL = 'https://hlinmryajtmebgbjhlgi.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_4qVlWP9Lb0eRQZASi0DMCg_JfFY5j_B';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 

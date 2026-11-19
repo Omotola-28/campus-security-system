@@ -5,8 +5,8 @@ import time
 from datetime import datetime
 
 # --- 1. Supabase Configuration ---
-SUPABASE_URL = "https://ddcrnfojzuhogkuexboz.supabase.co"
-SUPABASE_KEY = "sb_secret_tqBpHryhF4ZTli629lhFZQ_gqJYn9J9"
+SUPABASE_URL = "https://hlinmryajtmebgbjhlgi.supabase.co"
+SUPABASE_KEY = "sb_publishable_4qVlWP9Lb0eRQZASi0DMCg_JfFY5j_B"
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
